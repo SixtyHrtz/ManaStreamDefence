@@ -1,0 +1,47 @@
+---
+projectName: Mana Stream Defence
+dependencies:
+- https://github.com/wurstscript/wurstStdlib2
+buildMapData:
+  name: Mana Stream Defence
+  fileName: ManaStreamDefence
+  author: SixtyHz
+  scenarioData:
+    suggestedPlayers: 1-4
+    loadingScreen:
+      title: Mana Stream Defence
+      subTitle: XGM Custom Maps Contest 2019
+  players:
+  - race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 1
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 2
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 3
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 23
+    race: UNDEAD
+    controller: COMPUTER
+    fixedStartLoc: true
+  forces:
+  - name: Архитекторы
+    playerIds:
+    - 0
+    - 1
+    - 2
+    - 3
+    flags:
+      allied: true
+      alliedVictory: true
+      sharedVision: true
+  - name: Нежить
+    playerIds:
+    - 23

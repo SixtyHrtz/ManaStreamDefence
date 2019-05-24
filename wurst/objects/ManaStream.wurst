@@ -1,0 +1,10 @@
+package ManaStream
+
+import ManaStreamEntity
+
+public class ManaStream
+    lightning streamEffect
+    ManaStreamEntity targetEntity
+
+    ondestroy
+        DestroyLightning(streamEffect)

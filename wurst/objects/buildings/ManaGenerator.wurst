@@ -1,0 +1,27 @@
+package ManaGenerator
+
+import SendManaFlux
+import StopManaFlux
+import Assets
+import ObjectIdGenerator
+import UnitObjEditing
+import ObjectIds
+
+public let MANA_GENERATOR_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function generate()
+    new BuildingDefinition(MANA_GENERATOR_ID, UnitIds.powergenerator)
+        ..setTooltipBasic("[Q] Построить генератор маны")
+        ..setPlacementRequires("unbuildable")
+        // TODO: полное описание
+        ..setTooltipExtended("Генератор маны - устройство для выработки и передачи маны с помощью заряженных кристаллов магии.")
+        ..setHotkey("Q")
+        ..setButtonPositionX(0)
+        ..setButtonPositionY(0)
+        ..setHitPointsMaximumBase(500)
+        ..setManaInitialAmount(0)
+        ..setManaMaximum(100)
+        ..setGoldCost(0)
+        ..setLumberCost(0)
+        ..setBuildTime(10)
+        ..setNormalAbilities(commaList(SEND_MANA_FLUX_ID, STOP_MANA_FLUX_ID))

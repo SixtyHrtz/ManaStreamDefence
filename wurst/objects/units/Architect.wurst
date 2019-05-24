@@ -1,0 +1,26 @@
+package Architect
+
+import ManaGenerator
+import ManaTower
+import Wall
+import Assets
+import ObjectIdGenerator
+import UnitObjEditing
+import ObjectIds
+
+let ARCHITECT_ID = compiletime(HERO_ID_GEN.next())
+
+public class Architect
+    private unit architect
+
+    construct(player owner)
+        architect = createUnit(owner, ARCHITECT_ID, ZERO2, angle(0))
+
+@compiletime function generateArchitect()
+    new HeroDefinition(ARCHITECT_ID, UnitIds.jaina)
+        ..setName("")
+        ..setProperNames("")
+        ..setNormalAbilities(commaList(AbilityIds.restore))
+        ..setHeroAbilities("")
+        ..setStructuresBuilt(commaList(MANA_GENERATOR_ID, MANA_TOWER_ID, WALL_WE_ID, WALL_NS_ID))
+        ..setRace(Race.Undead)

@@ -1,0 +1,32 @@
+package ManaStreamEntity
+
+import ManaGenerator
+import ManaTower
+import initlater ManaStreamer
+import HashMap
+import ClosureEvents
+
+public HashMap<int, ManaStreamEntity> manaStreamEntities
+
+public class ManaStreamEntity
+    protected bool isActive
+    protected unit entity
+    protected int mana
+
+    construct(unit entity)
+        this.entity = entity
+
+    function testPrint()
+        print(entity.getName())
+
+public function initManaStreamEntities()
+    manaStreamEntities = new HashMap<int, ManaStreamEntity>()
+
+    EventListener.add(EVENT_PLAYER_UNIT_CONSTRUCT_FINISH) () ->
+        let entity = GetConstructedStructure()
+
+        switch GetConstructedStructure().getTypeId()
+            case MANA_GENERATOR_ID
+                manaStreamEntities.put(entity.getHandleId(), new ManaStreamer(entity))
+            case MANA_TOWER_ID
+                manaStreamEntities.put(entity.getHandleId(), new ManaStreamEntity(entity))

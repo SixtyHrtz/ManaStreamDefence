@@ -1,0 +1,26 @@
+package GameInit
+
+import ManaStreamEntity
+import Architect
+import ClosureTimers
+
+public destructable gate
+
+function initEnvironment()
+    SetTimeOfDay(12)
+
+function initDestructables()
+    gate = createDestructable('YTce', vec2(-1000, 0), angle(0), 1, 0)
+
+function start()
+    initEnvironment()
+    initDestructables()
+    initManaStreamEntities()
+    
+    for i = 0 to bj_MAX_PLAYER_SLOTS - 1
+        if players[i].isIngame()
+            players[i].panCameraToTimed(ZERO2, 0)
+            new Architect(players[i])
+
+init
+    doAfter(0.025, () -> start())
