@@ -25,8 +25,12 @@ public function initManaStreamEntities()
     EventListener.add(EVENT_PLAYER_UNIT_CONSTRUCT_FINISH) () ->
         let entity = GetConstructedStructure()
 
+        ManaStreamEntity streamEntity = null
         switch GetConstructedStructure().getTypeId()
             case MANA_GENERATOR_ID
-                manaStreamEntities.put(entity.getHandleId(), new ManaStreamer(entity))
+                streamEntity = new ManaStreamer(entity)
             case MANA_TOWER_ID
-                manaStreamEntities.put(entity.getHandleId(), new ManaStreamEntity(entity))
+                streamEntity = new ManaStreamEntity(entity)
+        
+        if (streamEntity != null)
+            manaStreamEntities.put(entity.getHandleId(), streamEntity)
