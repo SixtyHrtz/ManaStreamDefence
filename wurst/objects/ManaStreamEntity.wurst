@@ -14,7 +14,9 @@ public HashMap<int, ManaStreamEntity> manaStreamEntities
 public class ManaStreamEntity
     protected bool isActive
     protected unit entity
-    protected int mana
+    protected int manaSupply
+
+    private bool inspected
 
     protected LinkedList<ManaStream> manaStreams
 
@@ -39,8 +41,17 @@ public class ManaStreamEntity
             if t.targetEntity.entity == target
                 destroy t
 
-    function testPrint()
-        print(entity.getName())
+    // TODO: cleanup inspected
+    function getCircuitPower() returns int
+        if inspected
+            return 0
+        inspected = true
+
+        var totalMana = manaSupply
+        for manaStream in manaStreams
+            totalMana += manaStream.targetEntity.getCircuitPower()
+
+        return totalMana
 
 public function initManaStreamEntities()
     manaStreamEntities = new HashMap<int, ManaStreamEntity>()
