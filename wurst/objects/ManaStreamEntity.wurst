@@ -2,9 +2,12 @@ package ManaStreamEntity
 
 import ManaGenerator
 import ManaTower
-import initlater ManaStreamer
+import ManaStreamer
 import HashMap
 import ClosureEvents
+import LinkedList
+import ManaStream
+import ErrorHandling
 
 public HashMap<int, ManaStreamEntity> manaStreamEntities
 
@@ -13,8 +16,28 @@ public class ManaStreamEntity
     protected unit entity
     protected int mana
 
+    protected LinkedList<ManaStream> manaStreams
+
     construct(unit entity)
         this.entity = entity
+
+        manaStreams = new LinkedList<ManaStream>
+
+    function addManaStream(unit target)
+        let targetEntity = new ManaStream()
+        targetEntity.targetEntity = target.getStreamEntity()
+        manaStreams.add(targetEntity)
+
+    function addManaStream(unit target, unit caster)
+        let targetEntity = new ManaStream()
+        targetEntity.targetEntity = target.getStreamEntity()
+        targetEntity.streamEffect = addLightning(LIGHTNING_MAGIC_LEASH, true, caster.getPos(), target.getPos())
+        manaStreams.add(targetEntity)
+
+    function removeManaStream(unit target)
+        manaStreams.forEach() (ManaStream t) ->
+            if t.targetEntity.entity == target
+                destroy t
 
     function testPrint()
         print(entity.getName())
@@ -34,3 +57,10 @@ public function initManaStreamEntities()
         
         if (streamEntity != null)
             manaStreamEntities.put(entity.getHandleId(), streamEntity)
+
+public function unit.getStreamEntity() returns ManaStreamEntity
+    let targetHandleId = this.getHandleId()
+    if not manaStreamEntities.has(targetHandleId)
+        error("При указании цели, в словаре не удалось найти цель потока маны.")
+    
+    return manaStreamEntities.get(targetHandleId)
