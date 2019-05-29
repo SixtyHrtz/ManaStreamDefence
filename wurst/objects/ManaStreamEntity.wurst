@@ -7,7 +7,7 @@ import HashMap
 import ClosureEvents
 import LinkedList
 import ManaStream
-import ErrorHandling
+import HashList
 
 public HashMap<int, ManaStreamEntity> manaStreamEntities
 
@@ -15,8 +15,6 @@ public class ManaStreamEntity
     protected bool isActive
     protected unit entity
     protected int manaSupply
-
-    private bool inspected
 
     protected LinkedList<ManaStream> manaStreams
 
@@ -41,15 +39,18 @@ public class ManaStreamEntity
             if t.targetEntity.entity == target
                 destroy t
 
-    // TODO: cleanup inspected
     function getCircuitPower() returns int
-        if inspected
+        let inspected = new HashList<ManaStreamEntity>()
+        return dfs(inspected)
+
+    function dfs(HashList<ManaStreamEntity> inspected) returns int
+        if inspected.has(this)
             return 0
-        inspected = true
+        inspected.add(this)
 
         var totalMana = manaSupply
         for manaStream in manaStreams
-            totalMana += manaStream.targetEntity.getCircuitPower()
+            totalMana += manaStream.targetEntity.dfs(inspected)
 
         return totalMana
 
@@ -63,8 +64,10 @@ public function initManaStreamEntities()
         switch GetConstructedStructure().getTypeId()
             case MANA_GENERATOR_ID
                 streamEntity = new ManaStreamer(entity)
+                streamEntity.manaSupply = 100
             case MANA_TOWER_ID
                 streamEntity = new ManaStreamEntity(entity)
+                streamEntity.manaSupply = -50
         
         if (streamEntity != null)
             manaStreamEntities.put(entity.getHandleId(), streamEntity)
@@ -72,6 +75,6 @@ public function initManaStreamEntities()
 public function unit.getStreamEntity() returns ManaStreamEntity
     let targetHandleId = this.getHandleId()
     if not manaStreamEntities.has(targetHandleId)
-        error("При указании цели, в словаре не удалось найти цель потока маны.")
-    
+        return null
+
     return manaStreamEntities.get(targetHandleId)

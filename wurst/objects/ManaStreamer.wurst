@@ -22,6 +22,9 @@ public class ManaStreamer extends ManaStreamEntity
             if manaStream.targetEntity.entity == target
                 return
 
+        if target.getStreamEntity() == null
+            return
+
         addManaStream(target, caster)
         target.getStreamEntity().addManaStream(caster)
 
