@@ -2,38 +2,37 @@ package ManaStreamer
 
 import SendManaFlux
 import StopManaFlux
-import ManaStreamEntity
 import ManaStream
+import initlater ManaStreamEntity
 import LinkedList
 import ClosureEvents
-import ErrorHandling
 
 public class ManaStreamer extends ManaStreamEntity
-    private LinkedList<ManaStream> manaStreams
 
     construct(unit entity)
         super(entity)
-        manaStreams = new LinkedList<ManaStream>
 
-        // TODO: ничего не делать при попытке передачи потока к уже связанной сущности
-        EventListener.onTargetCast(entity, SEND_MANA_FLUX_ID) (caster, target) ->
-            let targetHandleId = target.getHandleId()
-            if not manaStreamEntities.has(targetHandleId)
-                error("При указании цели, в словаре не удалось найти цель потока маны.")
+        EventListener.onTargetCast(entity, SEND_MANA_FLUX_ID,
+            (caster, target) -> onSendManaFluxCast(caster, target))
+        EventListener.onCast(entity, STOP_MANA_FLUX_ID,
+            (caster) -> onStopManaFluxCast(caster))
             
-            let targetEntity = new ManaStream()
-            targetEntity.targetEntity = manaStreamEntities.get(targetHandleId)
-            targetEntity.streamEffect = addLightning(LIGHTNING_MAGIC_LEASH, true, caster.getPos(), target.getPos())
-            manaStreams.add(targetEntity)
+    function onSendManaFluxCast(unit caster, unit target)
+        for manaStream in manaStreams
+            if manaStream.targetEntity.entity == target
+                return
 
-            testPrint()
+        if target.getStreamEntity() == null
+            return
 
-        EventListener.onCast(entity, STOP_MANA_FLUX_ID) (caster) ->
-            manaStreams.forEach() (stream) ->
-                destroy stream
-            manaStreams.clear()
+        addManaStream(target, caster)
+        target.getStreamEntity().addManaStream(caster)
 
-    override function testPrint()
-        super.testPrint()
-        manaStreams.forEach() (ManaStream t) ->
-            t.targetEntity.testPrint()
+        print("Показатель маны в сети:" + getCircuitPower().toString())
+
+    function onStopManaFluxCast(unit caster)
+        manaStreams.forEach() (stream) ->
+            stream.targetEntity.removeManaStream(caster)
+            destroy stream
+
+        manaStreams.clear()

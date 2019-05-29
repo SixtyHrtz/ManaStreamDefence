@@ -2,22 +2,57 @@ package ManaStreamEntity
 
 import ManaGenerator
 import ManaTower
-import initlater ManaStreamer
+import ManaStreamer
 import HashMap
 import ClosureEvents
+import LinkedList
+import ManaStream
+import HashList
 
 public HashMap<int, ManaStreamEntity> manaStreamEntities
 
 public class ManaStreamEntity
     protected bool isActive
     protected unit entity
-    protected int mana
+    protected int manaSupply
+
+    protected LinkedList<ManaStream> manaStreams
 
     construct(unit entity)
         this.entity = entity
 
-    function testPrint()
-        print(entity.getName())
+        manaStreams = new LinkedList<ManaStream>
+
+    function addManaStream(unit target)
+        let targetEntity = new ManaStream()
+        targetEntity.targetEntity = target.getStreamEntity()
+        manaStreams.add(targetEntity)
+
+    function addManaStream(unit target, unit caster)
+        let targetEntity = new ManaStream()
+        targetEntity.targetEntity = target.getStreamEntity()
+        targetEntity.streamEffect = addLightning(LIGHTNING_MAGIC_LEASH, true, caster.getPos(), target.getPos())
+        manaStreams.add(targetEntity)
+
+    function removeManaStream(unit target)
+        manaStreams.forEach() (ManaStream t) ->
+            if t.targetEntity.entity == target
+                destroy t
+
+    function getCircuitPower() returns int
+        let inspected = new HashList<ManaStreamEntity>()
+        return dfs(inspected)
+
+    function dfs(HashList<ManaStreamEntity> inspected) returns int
+        if inspected.has(this)
+            return 0
+        inspected.add(this)
+
+        var totalMana = manaSupply
+        for manaStream in manaStreams
+            totalMana += manaStream.targetEntity.dfs(inspected)
+
+        return totalMana
 
 public function initManaStreamEntities()
     manaStreamEntities = new HashMap<int, ManaStreamEntity>()
@@ -29,8 +64,17 @@ public function initManaStreamEntities()
         switch GetConstructedStructure().getTypeId()
             case MANA_GENERATOR_ID
                 streamEntity = new ManaStreamer(entity)
+                streamEntity.manaSupply = 100
             case MANA_TOWER_ID
                 streamEntity = new ManaStreamEntity(entity)
+                streamEntity.manaSupply = -50
         
         if (streamEntity != null)
             manaStreamEntities.put(entity.getHandleId(), streamEntity)
+
+public function unit.getStreamEntity() returns ManaStreamEntity
+    let targetHandleId = this.getHandleId()
+    if not manaStreamEntities.has(targetHandleId)
+        return null
+
+    return manaStreamEntities.get(targetHandleId)

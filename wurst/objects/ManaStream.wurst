@@ -1,6 +1,6 @@
 package ManaStream
 
-import ManaStreamEntity
+import initlater ManaStreamEntity
 
 public class ManaStream
     lightning streamEffect
