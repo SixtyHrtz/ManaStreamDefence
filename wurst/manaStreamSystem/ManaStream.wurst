@@ -2,8 +2,20 @@ package ManaStream
 import initlater ManaStreamEntity
 
 public class ManaStream
-    lightning streamEffect
+    ManaStreamEntity sourceEntity
     ManaStreamEntity targetEntity
+    
+    private lightning streamEffect
 
-    ondestroy
+    construct(unit source, unit target, bool firstPass)
+        sourceEntity = source.getStreamEntity()
+        targetEntity = target.getStreamEntity()
+
+        if firstPass
+            streamEffect = addLightning(LIGHTNING_MAGIC_LEASH, true, source.getPos(), target.getPos())
+            targetEntity.addManaStream(target, source, false)
+
+    function kill(bool firstPass)
         DestroyLightning(streamEffect)
+        if firstPass
+            targetEntity.removeManaStream(sourceEntity, false)

@@ -13,7 +13,7 @@ public class ManaStreamer extends ManaStreamEntity
         EventListener.onTargetCast(entity, SEND_MANA_FLUX_ID,
             (caster, target) -> onSendManaFluxCast(caster, target))
         EventListener.onCast(entity, STOP_MANA_FLUX_ID,
-            (caster) -> onStopManaFluxCast(caster))
+            (caster) -> onStopManaFluxCast())
             
     function onSendManaFluxCast(unit caster, unit target)
         for manaStream in manaStreams
@@ -22,15 +22,8 @@ public class ManaStreamer extends ManaStreamEntity
 
         if target.getStreamEntity() == null
             return
+            
+        addManaStream(caster, target, true)
 
-        addManaStream(target, caster)
-        target.getStreamEntity().addManaStream(caster)
-
-        print("Показатель маны в сети:" + getCircuitPower().toString())
-
-    function onStopManaFluxCast(unit caster)
-        manaStreams.forEach() (stream) ->
-            stream.targetEntity.removeManaStream(caster)
-            destroy stream
-
-        manaStreams.clear()
+    function onStopManaFluxCast()
+        removeManaStreams()

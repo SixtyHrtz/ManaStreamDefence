@@ -10,8 +10,9 @@ import ManaStreamer
 public HashMap<int, ManaStreamEntity> manaStreamEntities
 
 public class ManaStreamEntity
+    unit entity    
+
     protected bool isActive
-    protected unit entity
     protected int manaSupply
 
     protected LinkedList<ManaStream> manaStreams
@@ -21,21 +22,22 @@ public class ManaStreamEntity
 
         manaStreams = new LinkedList<ManaStream>
 
-    function addManaStream(unit target)
-        let targetEntity = new ManaStream()
-        targetEntity.targetEntity = target.getStreamEntity()
-        manaStreams.add(targetEntity)
+        EventListener.add(entity, EVENT_PLAYER_UNIT_DEATH) () ->
+            removeManaStreams()
 
-    function addManaStream(unit target, unit caster)
-        let targetEntity = new ManaStream()
-        targetEntity.targetEntity = target.getStreamEntity()
-        targetEntity.streamEffect = addLightning(LIGHTNING_MAGIC_LEASH, true, caster.getPos(), target.getPos())
-        manaStreams.add(targetEntity)
+    function addManaStream(unit caster, unit target, bool isDirect)
+        manaStreams.add(new ManaStream(caster, target, isDirect))
 
-    function removeManaStream(unit target)
-        manaStreams.forEach() (ManaStream t) ->
-            if t.targetEntity.entity == target
-                destroy t
+    function removeManaStreams()
+        for manaStream in manaStreams
+            manaStream.kill(true)
+        manaStreams.clear()
+
+    function removeManaStream(ManaStreamEntity target, bool firstPass)
+        for manaStream in manaStreams
+            if manaStream.targetEntity == target
+                manaStream.kill(firstPass)
+                manaStreams.remove(manaStream)
 
     function getCircuitPower() returns int
         let inspected = new HashList<ManaStreamEntity>()
