@@ -1,11 +1,9 @@
 package ManaStreamer
-
-import SendManaFlux
-import StopManaFlux
+import ClosureEvents
+import GeneratedAbilities
+import LinkedList
 import ManaStream
 import initlater ManaStreamEntity
-import LinkedList
-import ClosureEvents
 
 public class ManaStreamer extends ManaStreamEntity
 

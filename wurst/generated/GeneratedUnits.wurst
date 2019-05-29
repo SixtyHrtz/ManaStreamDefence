@@ -1,0 +1,36 @@
+package GeneratedUnits
+import AbilityIds
+import ChannelAbilityPreset
+import GeneratedBuildings
+import UnitIds
+
+public let ARCHITECT_ID = compiletime(HERO_ID_GEN.next())
+public let GHOUL_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function generate()
+    new HeroDefinition(ARCHITECT_ID, UnitIds.jaina)
+        ..setName("")
+        ..setProperNames("Архитектор")
+        ..setNormalAbilities(commaList(AbilityIds.restore))
+        ..setHeroAbilities("")
+        ..setStructuresBuilt(commaList(MANA_GENERATOR_ID, MANA_TOWER_ID, WALL_WE_ID, WALL_NS_ID))
+        ..setRace(Race.Undead)
+        ..setHitPointsMaximumBase(250)
+        ..setManaMaximum(0)
+        ..setManaInitialAmount(0)
+        ..setAttack1CooldownTime(0.25)
+        ..setAttack1AnimationDamagePoint(0)
+        ..setAttack1DamageBase(4)
+        ..setAttack1DamageNumberofDice(1)
+        ..setAttack1DamageSidesperDie(1)
+        ..setAttack1Range(800)
+        ..setAcquisitionRange(800)
+
+    new UnitDefinition(GHOUL_ID, UnitIds.ghoul)
+        ..setHitPointsMaximumBase(20)
+        ..setAttack1CooldownTime(1)
+        ..setAttack1AnimationDamagePoint(0)
+        ..setAttack1DamageBase(9)
+        ..setAttack1DamageNumberofDice(1)
+        ..setAttack1DamageSidesperDie(1)
+        ..setAttack1Range(100)

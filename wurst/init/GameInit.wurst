@@ -1,8 +1,7 @@
 package GameInit
-
-import ManaStreamEntity
-import Architect
 import ClosureTimers
+import GeneratedUnits
+import ManaStreamEntity
 
 public destructable gate
 
@@ -20,7 +19,7 @@ function start()
     for i = 0 to bj_MAX_PLAYER_SLOTS - 1
         if players[i].isIngame()
             players[i].panCameraToTimed(ZERO2, 0)
-            new Architect(players[i])
+            createUnit(players[i], ARCHITECT_ID, ZERO2, angle(0))
 
 init
     doAfter(0.025, () -> start())

@@ -1,0 +1,94 @@
+package GeneratedBuildings
+import Assets
+import GeneratedAbilities
+import ObjectIdGenerator
+import ObjectIds
+import UnitObjEditing
+
+public let MANA_GENERATOR_ID = compiletime(UNIT_ID_GEN.next())
+public let MANA_TOWER_ID = compiletime(UNIT_ID_GEN.next())
+public let WALL_WE_ID = compiletime(UNIT_ID_GEN.next())
+public let WALL_NS_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function generate()
+    new BuildingDefinition(MANA_GENERATOR_ID, UnitIds.powergenerator)
+        ..setTooltipBasic("[Q] Построить генератор маны")
+        ..setPlacementRequires("unbuildable")
+        // TODO: полное описание
+        ..setTooltipExtended("Генератор маны - устройство для выработки и передачи маны с помощью заряженных кристаллов магии.")
+        ..setHotkey("Q")
+        ..setButtonPositionX(0)
+        ..setButtonPositionY(0)
+        ..setHitPointsMaximumBase(500)
+        ..setManaInitialAmount(0)
+        ..setManaMaximum(100)
+        ..setGoldCost(0)
+        ..setLumberCost(0)
+        ..setBuildTime(10)
+        ..setNormalAbilities(commaList(SEND_MANA_FLUX_ID, STOP_MANA_FLUX_ID))
+
+    new BuildingDefinition(MANA_TOWER_ID, UnitIds.humanarcanetower)
+        ..setTooltipBasic("[W] Построить магическую башню")
+        ..setPlacementRequires("unbuildable")
+        // TODO: полное описание
+        ..setTooltipExtended("Защитная мана-башня - защитное сооружение для охраны территории за счёт поступающей маны.")
+        ..setHotkey("W")
+        ..setButtonPositionX(1)
+        ..setButtonPositionY(0)
+        ..setHitPointsMaximumBase(500)
+        ..setManaInitialAmount(0)
+        ..setManaMaximum(0)
+        ..setGoldCost(0)
+        ..setLumberCost(0)
+        ..setBuildTime(15)
+        ..setNormalAbilities("")
+        ..setAttack1CooldownTime(0.25)
+        ..setAttack1AnimationDamagePoint(0)
+        ..setAttack1DamageBase(4)
+        ..setAttack1DamageNumberofDice(1)
+        ..setAttack1DamageSidesperDie(1)
+        ..setAttack1Range(800)
+        ..setAcquisitionRange(800)
+
+    new BuildingDefinition(WALL_WE_ID, UnitIds.powergenerator)
+        ..setModelFile(Doodads.gate)
+        ..setIconGameInterface(Icons.bTNDemonGate)
+        ..setPathingMap("PathTextures\\Gate1Path.tga")
+        ..setGroundTexture("")
+        ..setShadowTextureBuilding(Textures.shadowGate1)
+        ..setPlacementRequires("unbuildable")
+        ..setName("Стена З-В")
+        ..setTooltipBasic("[E] Построить стену (З-В)")
+        // TODO: полное описание
+        ..setTooltipExtended("Стена (З-В) - оборонительное сооружение для защиты территории с запада на восток.")
+        ..setHotkey("E")
+        ..setButtonPositionX(2)
+        ..setButtonPositionY(0)
+        ..setHitPointsMaximumBase(500)
+        ..setManaInitialAmount(0)
+        ..setManaMaximum(0)
+        // TODO: стоимость
+        ..setGoldCost(0)
+        ..setLumberCost(0)
+        ..setBuildTime(5)
+
+    /*new BuildingDefinition(WALL_NS_ID, UnitIds.powergenerator)
+        ..setModelFile(Doodads.gate)
+        ..setPathingMap("PathTextures\\Gate1Path.tga")
+        ..setGroundTexture("")
+        ..setShadowTextureBuilding(Textures.shadowGate1)
+        ..setPlacementRequires("unbuildable")
+        ..setName("Стена С-Ю")
+        ..setTooltipBasic("[R] Построить стену (С-Ю)")
+        // TODO: полное описание
+        ..setTooltipExtended("Стена (С-Ю) - оборонительное сооружение для защиты территории с севера на юг.")
+        ..setHotkey("R")
+        ..setButtonPositionX(2)
+        ..setButtonPositionY(0)
+        ..setHitPointsMaximumBase(500)
+        ..setManaInitialAmount(0)
+        ..setManaMaximum(0)
+        // TODO: стоимость
+        ..setGoldCost(0)
+        ..setLumberCost(0)
+        ..setBuildTime(5)*/

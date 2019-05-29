@@ -1,13 +1,11 @@
 package ManaStreamEntity
-
-import ManaGenerator
-import ManaTower
-import ManaStreamer
-import HashMap
 import ClosureEvents
+import GeneratedBuildings
+import HashList
+import HashMap
 import LinkedList
 import ManaStream
-import HashList
+import ManaStreamer
 
 public HashMap<int, ManaStreamEntity> manaStreamEntities
 
