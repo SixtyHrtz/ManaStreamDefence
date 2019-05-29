@@ -1,5 +1,4 @@
 package ManaStream
-
 import initlater ManaStreamEntity
 
 public class ManaStream
