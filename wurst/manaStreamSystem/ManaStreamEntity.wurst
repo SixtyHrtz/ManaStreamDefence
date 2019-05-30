@@ -67,7 +67,9 @@ public function initManaStreamEntities()
                 streamEntity.manaSupply = 100
             case MANA_TOWER_ID
                 streamEntity = new ManaStreamEntity(entity)
-                streamEntity.manaSupply = -50
+                streamEntity.manaSupply = -10
+            case PRISM_ID
+                streamEntity = new ManaStreamEntity(entity)
         
         if (streamEntity != null)
             manaStreamEntities.put(entity.getHandleId(), streamEntity)
