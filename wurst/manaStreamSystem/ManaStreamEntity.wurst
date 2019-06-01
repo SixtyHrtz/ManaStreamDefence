@@ -69,7 +69,7 @@ public function initManaStreamEntities()
                 streamEntity = new ManaStreamEntity(entity)
                 streamEntity.manaSupply = -10
             case PRISM_ID
-                streamEntity = new ManaStreamEntity(entity)
+                streamEntity = new ManaStreamer(entity)
         
         if (streamEntity != null)
             manaStreamEntities.put(entity.getHandleId(), streamEntity)
